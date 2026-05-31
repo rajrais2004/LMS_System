@@ -28,7 +28,7 @@ export async function resolveAuthDestination(role?: string) {
     case 'COLLECTION':
       return '/dashboard/collection';
     case 'BORROWER':
-      return '/borrower/status';
+      return '/borrower/personal-details';
     default:
       return '/auth/login';
   }
@@ -46,6 +46,7 @@ export function useAuth() {
       localStorage.removeItem('role');
       window.dispatchEvent(new Event('auth-change'));
     }
+
     setUser(null);
   };
 
@@ -56,6 +57,7 @@ export function useAuth() {
       localStorage.setItem('role', data.user.role);
       window.dispatchEvent(new Event('auth-change'));
     }
+
     setUser(data.user);
   };
 
@@ -84,6 +86,7 @@ export function useAuth() {
     loadFromStorage();
 
     const onAuthChange = () => loadFromStorage();
+
     window.addEventListener('auth-change', onAuthChange);
     window.addEventListener('storage', onAuthChange);
 
