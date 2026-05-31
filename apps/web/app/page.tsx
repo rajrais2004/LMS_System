@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import { HomeActions } from '../components/HomeActions';
 
 const modules = [
-  { href: '/auth/login', label: 'Borrower Login' },
-  { href: '/auth/register', label: 'Borrower Register' },
+  { href: '/auth/login', label: 'User Login' },
+  { href: '/auth/register', label: 'User Register' },
   { href: '/dashboard/admin', label: 'Admin Dashboard' },
   { href: '/dashboard/sales', label: 'Sales Dashboard' },
   { href: '/dashboard/sanction', label: 'Sanction Dashboard' },
@@ -13,12 +14,14 @@ const modules = [
 export default function HomePage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-6xl flex-col gap-10 px-6 py-16">
+      <HomeActions />
+
       <section className="rounded-3xl border border-slate-800/90 bg-slate-900/80 p-10 shadow-soft backdrop-blur-md">
         <div className="flex flex-col gap-6">
           <div>
             <p className="text-sm uppercase tracking-[0.35em] text-cyan-400">Loan Management System</p>
             <h1 className="mt-4 text-4xl font-semibold text-white sm:text-5xl">Premium borrower and operations workflow</h1>
-            <p className="mt-4 max-w-2xl text-slate-300">Built for evaluators: clean dashboards, strong RBAC, audit trails, and a guided borrower loan flow with intelligent BRE checks.</p>
+            <p className="mt-4 max-w-2xl text-slate-300">Built for evaluators: clean dashboards, strong RBAC, audit trails, and a guided borrower loan flow with intelligent staff and borrower access.</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {modules.map((item) => (

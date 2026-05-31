@@ -1,50 +1,39 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Toast } from '../../../components/ui/toast';
-import { useAuth } from '../../../hooks/useAuth';
-
-function getRedirectPath(role?: string) {
-  switch (role) {
-    case 'ADMIN':
-      return '/dashboard/admin';
-    case 'SALES':
-      return '/dashboard/sales';
-    case 'SANCTION':
-      return '/dashboard/sanction';
-    case 'DISBURSEMENT':
-      return '/dashboard/disbursement';
-    case 'COLLECTION':
-      return '/dashboard/collection';
-    case 'BORROWER':
-    default:
-      return '/borrower/personal-details';
-  }
-}
+import { useAuth, resolveAuthDestination } from '../../../hooks/useAuth';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { user, loading, login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && user) {
+      resolveAuthDestination(user.role).then((path) => router.replace(path));
+    }
+  }, [loading, user, router]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setLoading(true);
+    setBusy(true);
     setError('');
 
     try {
-      const user = await login(email, password);
-      router.push(getRedirectPath(user?.role));
+      const loggedUser = await login(email, password);
+      const path = await resolveAuthDestination(loggedUser?.role);
+      router.push(path);
     } catch (err: any) {
       setError(err.message || 'Unable to sign in');
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
   };
 
@@ -88,8 +77,8 @@ export default function LoginPage() {
             />
           </div>
 
-          <Button type="submit" disabled={loading}>
-            {loading ? 'Signing in…' : 'Sign in'}
+          <Button type="submit" disabled={busy}>
+            {busy ? 'Signing in…' : 'Sign in'}
           </Button>
         </form>
 

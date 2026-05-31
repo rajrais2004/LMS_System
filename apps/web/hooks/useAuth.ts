@@ -15,6 +15,30 @@ type AuthResponse = {
   user: NonNullable<UserState>;
 };
 
+export async function resolveAuthDestination(role?: string) {
+  switch (role) {
+    case 'ADMIN':
+      return '/dashboard/admin';
+    case 'SALES':
+      return '/dashboard/sales';
+    case 'SANCTION':
+      return '/dashboard/sanction';
+    case 'DISBURSEMENT':
+      return '/dashboard/disbursement';
+    case 'COLLECTION':
+      return '/dashboard/collection';
+    case 'BORROWER':
+      try {
+        const result = await apiFetch<{ application?: unknown }>('/api/borrower/status');
+        return result.application ? '/borrower/status' : '/borrower/personal-details';
+      } catch {
+        return '/borrower/personal-details';
+      }
+    default:
+      return '/auth/login';
+  }
+}
+
 export function useAuth() {
   const [user, setUser] = useState<UserState>(null);
   const [loading, setLoading] = useState(true);
@@ -52,7 +76,7 @@ export function useAuth() {
       }
     }
 
-    apiFetch<{ user: UserState }>('/api/auth/me')
+    apiFetch<{ user: UserState }>('/api/auth/me', { skipAuthRedirect: true })
       .then((data) => setUser(data.user))
       .catch(() => {
         if (!storedUser) setUser(null);
@@ -104,6 +128,7 @@ export function useAuth() {
     user,
     loading,
     error,
+    isAuthenticated: Boolean(user),
     login,
     register,
     logout,
