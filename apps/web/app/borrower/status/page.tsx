@@ -49,7 +49,10 @@ export default function StatusPage() {
               </div>
             )}
           </Card>
-          <LoanTimeline current={data?.loan?.status ?? 'BRE'} />
+         <LoanTimeline
+             application={data?.application}
+             loan={data?.loan}
+         />
         </div>
         <Card className="space-y-4">
           <h2 className="text-xl font-semibold text-white">Loan details</h2>
