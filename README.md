@@ -18,6 +18,16 @@ https://lms-api-fkz0.onrender.com
 
 ---
 
+# 🎥 Project Demo Video
+
+Watch the complete project walkthrough here:
+
+https://drive.google.com/file/d/1gYfhQh_kM_BEgzdkGjl_B0M-GnBdnRZ0/view?usp=sharing
+
+> This video demonstrates the complete Loan Management System workflow, including borrower onboarding, BRE validation, loan processing, role-based approvals, disbursement, collections, and loan closure.
+
+---
+
 # 📂 GitHub Repository
 
 https://github.com/rajrais2004/LMS_System
@@ -99,51 +109,39 @@ MongoDB Atlas
 
 ## Admin
 
-Email:
-[admin@lms.com](mailto:admin@lms.com)
+**Email:** [admin@lms.com](mailto:admin@lms.com)
 
-Password:
-Pass@123
+**Password:** Pass@123
 
 ## Sales
 
-Email:
-[sales@lms.com](mailto:sales@lms.com)
+**Email:** [sales@lms.com](mailto:sales@lms.com)
 
-Password:
-Pass@123
+**Password:** Pass@123
 
 ## Sanction
 
-Email:
-[sanction@lms.com](mailto:sanction@lms.com)
+**Email:** [sanction@lms.com](mailto:sanction@lms.com)
 
-Password:
-Pass@123
+**Password:** Pass@123
 
 ## Disbursement
 
-Email:
-[disbursement@lms.com](mailto:disbursement@lms.com)
+**Email:** [disbursement@lms.com](mailto:disbursement@lms.com)
 
-Password:
-Pass@123
+**Password:** Pass@123
 
 ## Collection
 
-Email:
-[collection@lms.com](mailto:collection@lms.com)
+**Email:** [collection@lms.com](mailto:collection@lms.com)
 
-Password:
-Pass@123
+**Password:** Pass@123
 
 ## Borrower
 
-Email:
-[borrower@lms.com](mailto:borrower@lms.com)
+**Email:** [borrower@lms.com](mailto:borrower@lms.com)
 
-Password:
-Pass@123
+**Password:** Pass@123
 
 ---
 
@@ -232,36 +230,38 @@ docker compose up --build
 
 The application is deployed on Render.
 
-Frontend:
+### Frontend
+
 https://lms-web-9hyx.onrender.com
 
-Backend:
+### Backend
+
 https://lms-api-fkz0.onrender.com
 
 ---
 
 # 🛠 Tech Stack
 
-Frontend
+## Frontend
 
 * Next.js 14
 * React
 * TypeScript
 * Tailwind CSS
 
-Backend
+## Backend
 
 * Node.js
 * Express.js
 * TypeScript
 * JWT Authentication
 
-Database
+## Database
 
 * MongoDB Atlas
 * Mongoose
 
-Deployment
+## Deployment
 
 * Render
 * GitHub
@@ -281,4 +281,6 @@ Deployment
 
 # 👨‍💻 Developed By
 
-Raj Rai
+**Raj Rai**
+
+GitHub: https://github.com/rajrais2004
