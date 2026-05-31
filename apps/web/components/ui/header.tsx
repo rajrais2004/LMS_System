@@ -9,10 +9,11 @@ export function Header() {
   const { user, logout, isAuthenticated } = useAuth();
   const router = useRouter();
 
-  const handleLogout = () => {
-    logout();
-    router.replace('/auth/login');
-  };
+ const handleLogout = async () => {
+  await logout();
+  router.replace('/auth/login');
+  router.refresh();
+};
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/95 backdrop-blur-xl">

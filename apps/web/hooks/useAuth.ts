@@ -29,7 +29,11 @@ export async function resolveAuthDestination(role?: string) {
       return '/dashboard/collection';
     case 'BORROWER':
       try {
-        const result = await apiFetch<{ application?: unknown }>('/api/borrower/status');
+        const result = await apiFetch<{ application?: unknown }>(
+          '/api/borrower/status',
+          { skipAuthRedirect: true }
+        );
+
         return result.application ? '/borrower/status' : '/borrower/personal-details';
       } catch {
         return '/borrower/personal-details';
@@ -77,9 +81,20 @@ export function useAuth() {
     }
 
     apiFetch<{ user: UserState }>('/api/auth/me', { skipAuthRedirect: true })
-      .then((data) => setUser(data.user))
+      .then((data) => {
+        if (data.user) {
+          setUser(data.user);
+
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('role', data.user.role);
+          }
+        }
+      })
       .catch(() => {
-        if (!storedUser) setUser(null);
+        if (!storedUser) {
+          clearAuth();
+        }
       })
       .finally(() => setLoading(false));
   }, []);
@@ -120,7 +135,16 @@ export function useAuth() {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await apiFetch('/api/auth/logout', {
+        method: 'POST',
+        skipAuthRedirect: true,
+      });
+    } catch {
+      // continue local logout even if backend logout fails
+    }
+
     clearAuth();
   };
 
