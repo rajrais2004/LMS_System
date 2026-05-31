@@ -7,6 +7,24 @@ import { Input } from '../../../components/ui/input';
 import { Toast } from '../../../components/ui/toast';
 import { useAuth } from '../../../hooks/useAuth';
 
+function getRedirectPath(role?: string) {
+  switch (role) {
+    case 'ADMIN':
+      return '/dashboard/admin';
+    case 'SALES':
+      return '/dashboard/sales';
+    case 'SANCTION':
+      return '/dashboard/sanction';
+    case 'DISBURSEMENT':
+      return '/dashboard/disbursement';
+    case 'COLLECTION':
+      return '/dashboard/collection';
+    case 'BORROWER':
+    default:
+      return '/borrower/personal-details';
+  }
+}
+
 export default function LoginPage() {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
@@ -19,9 +37,10 @@ export default function LoginPage() {
     event.preventDefault();
     setLoading(true);
     setError('');
+
     try {
-      await login(email, password);
-      router.push('/borrower/personal-details');
+      const user = await login(email, password);
+      router.push(getRedirectPath(user?.role));
     } catch (err: any) {
       setError(err.message || 'Unable to sign in');
     } finally {
@@ -33,23 +52,59 @@ export default function LoginPage() {
     <main className="mx-auto flex min-h-screen max-w-3xl items-center px-6 py-12">
       <section className="w-full space-y-8 rounded-[2rem] border border-slate-800/90 bg-slate-950/90 p-10 shadow-soft">
         <div className="space-y-3">
-          <p className="text-sm uppercase tracking-[0.35em] text-cyan-400">Borrower Access</p>
-          <h1 className="text-3xl font-semibold text-white">Login to continue your loan application</h1>
-          <p className="text-slate-400">Use borrower credentials or seed a new borrower account with the API seeder.</p>
+          <p className="text-sm uppercase tracking-[0.35em] text-cyan-400">
+            LMS Access
+          </p>
+
+          <h1 className="text-3xl font-semibold text-white">
+            Login to continue
+          </h1>
+
+          <p className="text-slate-400">
+            Use borrower or staff credentials to access the relevant workflow dashboard.
+          </p>
         </div>
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-3">
             <label className="text-sm text-slate-300">Email</label>
-            <Input value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="you@example.com" required />
+            <Input
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              type="email"
+              placeholder="you@example.com"
+              required
+            />
           </div>
+
           <div className="space-y-3">
             <label className="text-sm text-slate-300">Password</label>
-            <Input value={password} onChange={(event) => setPassword(event.target.value)} type="password" placeholder="********" required />
+            <Input
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              type="password"
+              placeholder="********"
+              required
+            />
           </div>
-          <Button type="submit" disabled={loading}>{loading ? 'Signing in…' : 'Sign in'}</Button>
+
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Signing in…' : 'Sign in'}
+          </Button>
         </form>
-        <p className="text-sm text-slate-400">Need an account? <a href="/auth/register" className="text-cyan-400 hover:text-cyan-300">Register here</a>.</p>
+
+        <p className="text-sm text-slate-400">
+          Need a borrower account?{' '}
+          <a
+            href="/auth/register"
+            className="text-cyan-400 hover:text-cyan-300"
+          >
+            Register here
+          </a>
+          .
+        </p>
       </section>
+
       {error && <Toast message={error} />}
     </main>
   );
