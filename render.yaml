@@ -1,30 +1,32 @@
 services:
-  - type: web_service
+  - type: web
     name: lms-api
     env: node
     branch: master
     plan: free
-    root: apps/api
+    rootDir: apps/api
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm run start
     envVars:
       - key: MONGO_URI
-        value: "<YOUR_MONGO_CONNECTION_STRING>"
+        value: mongodb+srv://rais88044_db_user:Raj_2004@cluster0.55uar5y.mongodb.net/lms?retryWrites=true&w=majority
       - key: JWT_SECRET
-        value: "change_this_secret"
-      - key: NEXT_PUBLIC_API_URL
-        value: "https://lms-web.onrender.com"
+        value: RajSuperSecret2026LoanManagementSystem
+      - key: NODE_ENV
+        value: production
       - key: PORT
-        value: "4000"
+        value: 4000
+      - key: NEXT_PUBLIC_API_URL
+        value: https://lms-web.onrender.com
 
-  - type: web_service
+  - type: web
     name: lms-web
     env: node
     branch: master
     plan: free
-    root: apps/web
+    rootDir: apps/web
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm run start
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: "https://lms-api.onrender.com"
+        value: https://lms-api.onrender.com
