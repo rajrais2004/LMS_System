@@ -41,9 +41,18 @@ const upload = multer({
   },
 });
 
+/* ===========================
+   AUTH ROUTES
+=========================== */
+
 router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);
+router.post('/auth/logout', authController.logout); // <-- Added
 router.get('/auth/me', authenticate, authController.me);
+
+/* ===========================
+   BORROWER ROUTES
+=========================== */
 
 router.post(
   '/borrower/personal-details',
@@ -73,6 +82,10 @@ router.get(
   authorize(['BORROWER']),
   borrowerController.borrowerStatus
 );
+
+/* ===========================
+   DASHBOARD ROUTES
+=========================== */
 
 router.get(
   '/dashboard/sales',
@@ -109,6 +122,10 @@ router.post(
   dashboardController.updateLoan
 );
 
+/* ===========================
+   PAYMENTS
+=========================== */
+
 router.post(
   '/payments',
   authenticate,
@@ -123,6 +140,15 @@ router.get(
   paymentController.paymentsForLoan
 );
 
-router.get('/audit', authenticate, authorize(['ADMIN']), auditController.auditLogs);
+/* ===========================
+   AUDIT
+=========================== */
+
+router.get(
+  '/audit',
+  authenticate,
+  authorize(['ADMIN']),
+  auditController.auditLogs
+);
 
 export default router;
