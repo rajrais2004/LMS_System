@@ -1,0 +1,30 @@
+services:
+  - type: web_service
+    name: lms-api
+    env: node
+    branch: master
+    plan: free
+    root: apps/api
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: MONGO_URI
+        value: "<YOUR_MONGO_CONNECTION_STRING>"
+      - key: JWT_SECRET
+        value: "change_this_secret"
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://lms-web.onrender.com"
+      - key: PORT
+        value: "4000"
+
+  - type: web_service
+    name: lms-web
+    env: node
+    branch: master
+    plan: free
+    root: apps/web
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://lms-api.onrender.com"
