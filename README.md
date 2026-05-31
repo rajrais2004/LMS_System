@@ -1,77 +1,284 @@
-# Loan Management System
+# 🚀 Loan Management System (LMS)
 
-A full-stack loan management system built with Next.js App Router, TypeScript, Tailwind CSS, Express, MongoDB, and JWT authentication.
+A production-ready Loan Management System built using **Next.js 14**, **TypeScript**, **Express.js**, **MongoDB**, **JWT Authentication**, and **Role-Based Access Control (RBAC)**.
 
-## Features
+This project simulates the complete lifecycle of a loan application, from borrower onboarding and BRE validation to sanction, disbursement, collection, and closure workflows.
 
-- Borrower registration and login
-- Multi-step borrower loan flow with BRE validation
-- Role-based dashboard modules for Sales, Sanction, Disbursement, Collection, and Admin
-- Loan lifecycle timeline and audit logging
-- File upload for salary slips (PDF/JPG/PNG, max 5MB)
-- Responsive UI with dark/light mode
-- Seeded users for all roles
-- Docker Compose for local development
+---
 
-## Setup
+# 🌐 Live Demo
 
-1. Copy `.env.example` to `apps/api/.env` and update values.
-2. Install dependencies from the repo root:
-   ```bash
-   npm install
-   ```
-3. Start services locally:
-   ```bash
-   npm run dev
-   ```
+### Frontend
 
-## MongoDB configuration
+https://lms-web-9hyx.onrender.com
 
-- Set `MONGO_URI` to your MongoDB connection string.
-- Set `JWT_SECRET` to a secure random string.
-- The API service uses `NEXT_PUBLIC_API_URL` for CORS origin when running locally.
+### Backend API
 
-## Deployment to Render
+https://lms-api-fkz0.onrender.com
 
-1. Create a Render account and connect your GitHub repository.
-2. Add two Render services:
-   - `lms-api`
-     - Root directory: `apps/api`
-     - Build command: `npm install && npm run build`
-     - Start command: `npm run start`
-     - Environment variables:
-       - `MONGO_URI`
-       - `JWT_SECRET`
-       - `NEXT_PUBLIC_API_URL` set to your frontend URL
-   - `lms-web`
-     - Root directory: `apps/web`
-     - Build command: `npm install && npm run build`
-     - Start command: `npm run start`
-     - Environment variables:
-       - `NEXT_PUBLIC_API_URL` set to your API URL
-3. Optionally use `render.yaml` in the repo to define both services.
+---
 
-## Credentials
+# 📂 GitHub Repository
 
-- Admin: admin@lms.com / Pass@123
-- Sales: sales@lms.com / Pass@123
-- Sanction: sanction@lms.com / Pass@123
-- Disbursement: disbursement@lms.com / Pass@123
-- Collection: collection@lms.com / Pass@123
-- Borrower: borrower@lms.com / Pass@123
+https://github.com/rajrais2004/LMS_System
 
-## Docker
+---
+
+# ✨ Key Features
+
+## Borrower Journey
+
+* User Registration & Login
+* JWT Authentication
+* Personal Details Submission
+* BRE (Business Rule Engine) Validation
+* Salary Slip Upload (PDF/JPG/PNG)
+* Loan Application Submission
+* Real-Time Loan Status Tracking
+
+## Loan Workflow
+
+* Sales Verification
+* Sanction Approval
+* Loan Disbursement
+* Collection Management
+* Loan Closure
+
+## Security
+
+* JWT Authentication
+* Role-Based Access Control (RBAC)
+* Protected APIs
+* Input Validation
+* Secure Password Hashing
+
+## Technical Features
+
+* Next.js App Router
+* TypeScript
+* Express.js REST APIs
+* MongoDB Database
+* Mongoose ODM
+* Tailwind CSS UI
+* Responsive Design
+* Audit Logging
+* File Upload System
+* Docker Support
+* Render Deployment
+
+---
+
+# 🏗️ Architecture
+
+```text
+Frontend (Next.js)
+       │
+       ▼
+Backend API (Express.js)
+       │
+       ▼
+MongoDB Atlas
+```
+
+---
+
+# 👥 User Roles
+
+| Role         | Access                           |
+| ------------ | -------------------------------- |
+| Borrower     | Apply for loans and track status |
+| Sales        | Review loan applications         |
+| Sanction     | Approve or reject applications   |
+| Disbursement | Disburse approved loans          |
+| Collection   | Manage repayments                |
+| Admin        | Full system access               |
+
+---
+
+# 🔑 Demo Credentials
+
+## Admin
+
+Email:
+[admin@lms.com](mailto:admin@lms.com)
+
+Password:
+Pass@123
+
+## Sales
+
+Email:
+[sales@lms.com](mailto:sales@lms.com)
+
+Password:
+Pass@123
+
+## Sanction
+
+Email:
+[sanction@lms.com](mailto:sanction@lms.com)
+
+Password:
+Pass@123
+
+## Disbursement
+
+Email:
+[disbursement@lms.com](mailto:disbursement@lms.com)
+
+Password:
+Pass@123
+
+## Collection
+
+Email:
+[collection@lms.com](mailto:collection@lms.com)
+
+Password:
+Pass@123
+
+## Borrower
+
+Email:
+[borrower@lms.com](mailto:borrower@lms.com)
+
+Password:
+Pass@123
+
+---
+
+# 📋 Borrower Flow
+
+```text
+Register/Login
+      ↓
+Personal Details
+      ↓
+BRE Evaluation
+      ↓
+Salary Slip Upload
+      ↓
+Loan Application
+      ↓
+Status Tracking
+```
+
+---
+
+# 📋 Internal Loan Workflow
+
+```text
+Sales Review
+      ↓
+Sanction Approval
+      ↓
+Disbursement
+      ↓
+Collection
+      ↓
+Closure
+```
+
+---
+
+# ⚙️ Local Setup
+
+## Clone Repository
+
+```bash
+git clone https://github.com/rajrais2004/LMS_System.git
+cd LMS_System
+```
+
+## Install Dependencies
+
+```bash
+npm install
+```
+
+## Configure Environment
+
+Create:
+
+```bash
+apps/api/.env
+```
+
+and add:
+
+```env
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
+
+## Start Development
+
+```bash
+npm run dev
+```
+
+---
+
+# 🐳 Docker
 
 ```bash
 docker compose up --build
 ```
 
-## Deployment
+---
 
-- Build with `npm run build`
-- Start with `npm run start`
+# ☁️ Deployment
 
-## Notes
+The application is deployed on Render.
 
-- API listens on port `4000`
-- Frontend listens on port `3000`
+Frontend:
+https://lms-web-9hyx.onrender.com
+
+Backend:
+https://lms-api-fkz0.onrender.com
+
+---
+
+# 🛠 Tech Stack
+
+Frontend
+
+* Next.js 14
+* React
+* TypeScript
+* Tailwind CSS
+
+Backend
+
+* Node.js
+* Express.js
+* TypeScript
+* JWT Authentication
+
+Database
+
+* MongoDB Atlas
+* Mongoose
+
+Deployment
+
+* Render
+* GitHub
+
+---
+
+# 📈 Future Improvements
+
+* Email Notifications
+* OTP Verification
+* Credit Score Integration
+* AWS S3 File Storage
+* Payment Gateway Integration
+* Advanced Analytics Dashboard
+
+---
+
+# 👨‍💻 Developed By
+
+Raj Rai
