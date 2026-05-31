@@ -28,16 +28,7 @@ export async function resolveAuthDestination(role?: string) {
     case 'COLLECTION':
       return '/dashboard/collection';
     case 'BORROWER':
-      try {
-        const result = await apiFetch<{ application?: unknown }>(
-          '/api/borrower/status',
-          { skipAuthRedirect: true }
-        );
-
-        return result.application ? '/borrower/status' : '/borrower/personal-details';
-      } catch {
-        return '/borrower/personal-details';
-      }
+      return '/borrower/status';
     default:
       return '/auth/login';
   }
@@ -48,55 +39,58 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const saveAuth = (data: AuthResponse) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('role', data.user.role);
-    }
-
-    setUser(data.user);
-  };
-
   const clearAuth = () => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('role');
+      window.dispatchEvent(new Event('auth-change'));
     }
-
     setUser(null);
   };
 
-  useEffect(() => {
-    const storedUser =
-      typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+  const saveAuth = (data: AuthResponse) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('role', data.user.role);
+      window.dispatchEvent(new Event('auth-change'));
+    }
+    setUser(data.user);
+  };
 
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        clearAuth();
-      }
+  const loadFromStorage = () => {
+    if (typeof window === 'undefined') return;
+
+    const token = localStorage.getItem('token');
+    const storedUser = localStorage.getItem('user');
+
+    if (!token || !storedUser) {
+      setUser(null);
+      setLoading(false);
+      return;
     }
 
-    apiFetch<{ user: UserState }>('/api/auth/me', { skipAuthRedirect: true })
-      .then((data) => {
-        if (data.user) {
-          setUser(data.user);
+    try {
+      setUser(JSON.parse(storedUser));
+    } catch {
+      clearAuth();
+    }
 
-          if (typeof window !== 'undefined') {
-            localStorage.setItem('user', JSON.stringify(data.user));
-            localStorage.setItem('role', data.user.role);
-          }
-        }
-      })
-      .catch(() => {
-        if (!storedUser) {
-          clearAuth();
-        }
-      })
-      .finally(() => setLoading(false));
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadFromStorage();
+
+    const onAuthChange = () => loadFromStorage();
+    window.addEventListener('auth-change', onAuthChange);
+    window.addEventListener('storage', onAuthChange);
+
+    return () => {
+      window.removeEventListener('auth-change', onAuthChange);
+      window.removeEventListener('storage', onAuthChange);
+    };
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -137,12 +131,12 @@ export function useAuth() {
 
   const logout = async () => {
     try {
-      await apiFetch('/api/auth/logout', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
         method: 'POST',
-        skipAuthRedirect: true,
+        credentials: 'include',
       });
     } catch {
-      // continue local logout even if backend logout fails
+      // ignore backend logout failure
     }
 
     clearAuth();

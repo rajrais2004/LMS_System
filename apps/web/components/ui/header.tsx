@@ -6,14 +6,14 @@ import { Button } from './button';
 import { useAuth } from '../../hooks/useAuth';
 
 export function Header() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, loading } = useAuth();
   const router = useRouter();
 
- const handleLogout = async () => {
-  await logout();
-  router.replace('/auth/login');
-  router.refresh();
-};
+  const handleLogout = async () => {
+    await logout();
+    router.replace('/auth/login');
+    router.refresh();
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/95 backdrop-blur-xl">
@@ -21,15 +21,21 @@ export function Header() {
         <Link href="/" className="text-lg font-semibold text-white hover:text-cyan-300">
           Loan Management System
         </Link>
+
         <div className="flex flex-wrap items-center gap-3">
-          {isAuthenticated && user ? (
+          {!loading && isAuthenticated && user ? (
             <>
               <div className="text-right text-sm">
                 <p className="font-medium text-white">{user.name}</p>
                 <p className="text-slate-400">{user.role}</p>
               </div>
-              <Button className="rounded-full bg-slate-800 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white hover:bg-slate-700" type="button" onClick={handleLogout}>
-                Sign out
+
+              <Button
+                type="button"
+                onClick={handleLogout}
+                className="rounded-full bg-slate-800 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white hover:bg-slate-700"
+              >
+                Sign Out
               </Button>
             </>
           ) : (
